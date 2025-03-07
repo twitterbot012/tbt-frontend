@@ -58,20 +58,28 @@ export default function Home() {
   };
 
   const startStopProcess = async () => {
-    if (isFetching) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stop-fetch`, { method: 'POST' });
-        if (response.ok) {
-          const statusResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`); 
-          const statusData = await statusResponse.json();
-          setIsFetching(statusData.status === "running"); 
-}
-    } else {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/start-fetch`, { method: 'POST' });
-        if (response.ok) {
-          const statusResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`); 
-          const statusData = await statusResponse.json();
-          setIsFetching(statusData.status === "running"); 
-}
+    // ⏳ Actualizamos el estado inmediatamente para evitar que el botón desaparezca
+    setIsFetching(prev => !prev); 
+
+    try {
+        const endpoint = isFetching ? "/stop-fetch" : "/start-fetch";
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, { method: 'POST' });
+
+        if (!response.ok) throw new Error("Error en la solicitud al backend");
+
+        // 🔄 Refrescamos el estado desde el backend después de unos segundos para asegurarnos
+        setTimeout(async () => {
+            try {
+                const statusResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`);
+                const statusData = await statusResponse.json();
+                setIsFetching(statusData.status === "running");
+            } catch (error) {
+                console.error("⚠️ Error al actualizar estado desde backend:", error);
+            }
+        }, 3000); // Esperamos 3 segundos antes de verificar el estado real
+    } catch (error) {
+        console.error("❌ Error al iniciar/detener el proceso:", error);
+        setIsFetching(prev => !prev); // Si hubo un error, revertimos el estado
     }
 };
 
