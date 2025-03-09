@@ -14,7 +14,6 @@ export default function Home() {
     const pathname = usePathname();
     const [languages, setLanguages] = useState([]);
 
-    // Estados para usuarios y keywords
     const [users, setUsers] = useState([]);
     const [keywords, setKeywords] = useState([]);
     const [userInput, setUserInput] = useState("");
