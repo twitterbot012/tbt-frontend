@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container, Row, Nav, Navbar, Spinner, Alert, Button } from "react-bootstrap";
 import { usePathname } from "next/navigation";
-import { House, ChatText, Monitor, Key, Prohibit, List, TwitterLogo } from "phosphor-react";
+import { House, ChatText, Monitor, Key, Prohibit, List, TwitterLogo, SignOut } from "phosphor-react";
 import './style.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,7 +16,12 @@ export default function TwoFALogin() {
     useEffect(() => {
         setTimeout(() => setLoading(false), 1500);
     }, []);
-
+    
+    const handleLogout = () => {
+        document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        window.location.href = "/admin"; // Redirigir al login
+    };
+    
     const toggleSidebar = () => {
         setSidebarOpen((prev) => !prev);
     };
@@ -117,6 +122,13 @@ function TwoFALoginContent({ isSidebarOpen, toggleSidebar, pathname }) {
                         className={`textl ${pathname === "/tweets" ? "active-link" : ""}`}
                     >
                         <TwitterLogo  size={20} weight="bold" className="me-2" /> Tweets
+                    </Nav.Link>
+                    <Nav.Link
+                        href="#"
+                        onClick={handleLogout}
+                        className="textl logout-link"
+                    >
+                        <SignOut size={20} weight="bold" className="me-2" /> Logout
                     </Nav.Link>
                 </Nav>
             </div>

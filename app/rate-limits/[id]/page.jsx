@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Container, Row, Navbar, Nav, Spinner, Alert, Button } from "react-bootstrap";
 import { usePathname } from "next/navigation";
-import { House, ChatText, Prohibit, Monitor, Key, TwitterLogo  } from "phosphor-react";
+import { House, ChatText, Prohibit, Monitor, Key, TwitterLogo, SignOut  } from "phosphor-react";
 import './style.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -45,7 +45,12 @@ export default function Home() {
     const handleRateLimitChange = (e) => {
         setRateLimit(e.target.value);
     };
-
+    
+    const handleLogout = () => {
+        document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        window.location.href = "/admin"; // Redirigir al login
+    };
+    
     const handleSaveRateLimit = async () => {
         if (!rateLimit || rateLimit <= 0) {
             setMessage({ type: "danger", text: "El límite debe ser un número mayor a 0." });
@@ -118,6 +123,13 @@ export default function Home() {
                             className={`textl ${pathname === "/tweets" ? "active-link" : ""}`}
                         >
                             <TwitterLogo  size={20} weight="bold" className="me-2" /> Tweets
+                        </Nav.Link>
+                        <Nav.Link
+                            href="#"
+                            onClick={handleLogout}
+                            className="textl logout-link"
+                        >
+                            <SignOut size={20} weight="bold" className="me-2" /> Logout
                         </Nav.Link>
                     </Nav>
                 </div>

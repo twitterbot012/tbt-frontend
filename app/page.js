@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { getAccounts, loginWithTwitter } from "../lib/api";
 import { Container, Row, Col, Modal, Nav, Navbar, Spinner, Alert, Button  } from "react-bootstrap";
 import { usePathname } from "next/navigation"; // Importar usePathname
-import { House, ChatText, Prohibit , Trash, Monitor, Key, List, TwitterLogo  } from "phosphor-react";
+import { House, ChatText, Prohibit , Trash, Monitor, Key, List, TwitterLogo, SignOut   } from "phosphor-react";
 import './style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -51,7 +51,12 @@ export default function Home() {
       setSelectedAccount(twitterId);
       setShowModal(true);
   };
-  
+
+  const handleLogout = () => {
+    document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    window.location.href = "/admin"; // Redirigir al login
+};
+
   const handleCloseModal = () => {
       setShowModal(false);
       setSelectedAccount(null);
@@ -161,6 +166,14 @@ export default function Home() {
               >
                 <TwitterLogo  size={20} weight="bold" className="me-2" /> Tweets
               </Nav.Link>
+              <Nav.Link
+                href="#"
+                onClick={handleLogout}
+                className="textl logout-link"
+              >
+                <SignOut size={20} weight="bold" className="me-2" /> Logout
+              </Nav.Link>
+
             </Nav>
           </div>
   

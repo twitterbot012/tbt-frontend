@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Container, Row, Nav, Navbar, Spinner, Button, Badge, Col } from "react-bootstrap";
-import { House, ChatText, Monitor, Key, Prohibit, List, TwitterLogo  } from "phosphor-react";
+import { House, ChatText, Monitor, Key, Prohibit, List, TwitterLogo, SignOut  } from "phosphor-react";
 import './style.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -68,7 +68,12 @@ export default function Home() {
             console.error("ID de Twitter no válido en la URL.");
         }
     }, [pathname]);
-
+    
+    const handleLogout = () => {
+        document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        window.location.href = "/admin"; // Redirigir al login
+    };
+    
     const handleSave = () => {
         const twitterId = pathname.split("/").pop(); // Obtener twitter_id de la URL
     
@@ -174,6 +179,14 @@ export default function Home() {
                         >
                             <TwitterLogo  size={20} weight="bold" className="me-2" /> Tweets
                         </Nav.Link>
+                        <Nav.Link
+                            href="#"
+                            onClick={handleLogout}
+                            className="textl logout-link"
+                        >
+                            <SignOut size={20} weight="bold" className="me-2" /> Logout
+                        </Nav.Link>
+
                     </Nav>
                 </div>
 

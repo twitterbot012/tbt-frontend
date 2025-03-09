@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Nav, Navbar, Spinner, Alert, Button, Modal, Form } from "react-bootstrap";
 import { usePathname } from "next/navigation"; 
-import { House, ChatText, Prohibit, Monitor, Key, List, TwitterLogo  } from "phosphor-react";
+import { House, ChatText, Prohibit, Monitor, Key, List, TwitterLogo, SignOut  } from "phosphor-react";
 import './style.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -74,7 +74,12 @@ export default function Home() {
         setShowAddModal(false);
         setTweetText("");
     };
-
+    
+    const handleLogout = () => {
+        document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        window.location.href = "/admin"; // Redirigir al login
+    };
+    
     const handleEditTweet = async () => {
         if (!selectedTweet || !tweetText) return;
         await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tweets/edit-tweet/${selectedTweet}`, {
@@ -152,6 +157,14 @@ export default function Home() {
                         >
                             <TwitterLogo  size={20} weight="bold" className="me-2" /> Tweets
                         </Nav.Link>
+                        <Nav.Link
+                            href="#"
+                            onClick={handleLogout}
+                            className="textl logout-link"
+                        >
+                            <SignOut size={20} weight="bold" className="me-2" /> Logout
+                        </Nav.Link>
+
                     </Nav>
                 </div>
 
