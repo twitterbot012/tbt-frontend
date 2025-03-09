@@ -123,13 +123,6 @@ function TwoFALoginContent({ isSidebarOpen, toggleSidebar, pathname }) {
                     >
                         <TwitterLogo  size={20} weight="bold" className="me-2" /> Tweets
                     </Nav.Link>
-                    <Nav.Link
-                        href="#"
-                        onClick={handleLogout}
-                        className="textl logout-link"
-                    >
-                        <SignOut size={20} weight="bold" className="me-2" /> Logout
-                    </Nav.Link>
                 </Nav>
             </div>
 
