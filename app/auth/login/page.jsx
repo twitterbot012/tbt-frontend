@@ -63,6 +63,7 @@ export default function Home() {
             } else if (data.error === "2FA_REQUIRED") {
                 window.location.href = `/auth/2fa-login?loginData=${encodeURIComponent(data.login_data)}`;
             } else {
+                console.log(data.error)
                 setError(data.error || "Login failed");
             }
         } catch (err) {
