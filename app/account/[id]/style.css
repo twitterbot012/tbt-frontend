@@ -327,7 +327,7 @@ body{
 }
 
 
-@media (min-width:768px) and (max-width: 1400px) {
+@media (min-width:768px) and (max-width: 1640px) {
   .btn-save{
     width:20%;
   }
