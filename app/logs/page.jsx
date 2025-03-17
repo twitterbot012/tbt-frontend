@@ -39,11 +39,6 @@ export default function Home() {
             }
         };
         
-        const handleLogout = () => {
-          document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-          window.location.href = "/admin"; // Redirigir al login
-      };
-      
         const fetchData = async () => {
             await fetchAccounts();
             await fetchLogs();
@@ -60,6 +55,12 @@ export default function Home() {
     const toggleSidebar = () => {
         setSidebarOpen((prev) => !prev);
     };
+    
+    const handleLogout = () => {
+      document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      window.location.href = "/admin"; // Redirigir al login
+  };
+  
 
     // Función para convertir timestamp a formato YYYY-MM-DD
     const formatDate = (timestamp) => {
