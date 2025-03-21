@@ -37,36 +37,34 @@ export default function Home() {
                 setLanguages([...languageSet].sort());
             })
             .catch((error) => console.error("Error fetching languages:", error));
-
-        // Simular carga inicial
-        setTimeout(() => setLoading(false), 1500);
-
+    
         // Extraer twitter_id de la URL
         const pathSegments = pathname.split("/"); // Dividir la ruta por "/"
         const twitterId = pathSegments[pathSegments.length - 1]; // Obtener el último segmento
-
+    
         if (twitterId && !isNaN(twitterId)) {
             // Realizar fetch al endpoint del backend con el twitter_id
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/account/${twitterId}`) // Ajusta la ruta según tu backend
+            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/account/${twitterId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.user) {
-                        // Establecer usuarios monitoreados y keywords
                         setUsers(data.monitored_users.map((mu) => mu.twitter_username));
-                        setUserInfo(data.user)
-                        setCustomStyle(data.user.custom_style || "");  
+                        setUserInfo(data.user);
+                        setCustomStyle(data.user.custom_style || "");
                         setSelectedLanguage(data.user.language || "English");
-
                         setKeywords(data.keywords);
                     } else {
                         console.error("No se encontraron datos para la cuenta.");
                     }
                 })
-                .catch((error) => console.error("Error fetching account details:", error));
+                .catch((error) => console.error("Error fetching account details:", error))
+                .finally(() => setLoading(false)); // Ahora se termina la carga cuando finaliza esta petición
         } else {
             console.error("ID de Twitter no válido en la URL.");
+            setLoading(false); // También termina la carga si el ID es inválido
         }
     }, [pathname]);
+    
     
     const handleLogout = () => {
         document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";

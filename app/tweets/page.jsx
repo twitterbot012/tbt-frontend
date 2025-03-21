@@ -16,31 +16,32 @@ export default function Home() {
     const pathname = usePathname(); 
 
     useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const data = await getAccounts();
-                setAccounts(Array.isArray(data) ? data : []); 
-            } catch (error) {
-                console.error("❌ Error al obtener cuentas:", error);
-                setAccounts([]);
-            }
-        };
-
-        const checkPostingStatus = async () => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-post`);
-                const data = await response.json();
-                setIsPosting(data.status === "running"); 
-            } catch (error) {
-                console.error("❌ Error al verificar el estado de publicación:", error);
-            }
-        };
-
-        checkPostingStatus(); 
-        fetchAccounts();
-        setTimeout(() => setLoading(false), 1500);
-    }, []);
-
+      const fetchAccounts = async () => {
+          try {
+              const data = await getAccounts();
+              setAccounts(Array.isArray(data) ? data : []);
+          } catch (error) {
+              console.error("❌ Error al obtener cuentas:", error);
+              setAccounts([]);
+          } finally {
+              setLoading(false); // ✅ Se ejecuta cuando termina fetchAccounts, con éxito o error
+          }
+      };
+  
+      const checkPostingStatus = async () => {
+          try {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-post`);
+              const data = await response.json();
+              setIsPosting(data.status === "running");
+          } catch (error) {
+              console.error("❌ Error al verificar el estado de publicación:", error);
+          }
+      };
+  
+      checkPostingStatus(); 
+      fetchAccounts(); // ✅ loading se apaga cuando esto termine
+  }, []);
+  
 
   
     const startStopPosting = async () => {

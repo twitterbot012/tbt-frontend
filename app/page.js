@@ -21,31 +21,35 @@ export default function Home() {
     const [isFetching, setIsFetching] = useState(false);  // Estado para saber si el proceso está activo
 
     useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const data = await getAccounts();
-                setAccounts(Array.isArray(data) ? data : []); // 🔹 Asegura que siempre sea un array
-            } catch (error) {
-                console.error("❌ Error al obtener cuentas:", error);
-                setAccounts([]); // 🔹 Si hay un error, mantiene un array vacío
-            }
-        };
-
-
-        const checkFetchingStatus = async () => {
+      const fetchAccounts = async () => {
+          try {
+              const data = await getAccounts();
+              setAccounts(Array.isArray(data) ? data : []); // 🔹 Asegura que siempre sea un array
+          } catch (error) {
+              console.error("❌ Error al obtener cuentas:", error);
+              setAccounts([]); // 🔹 Si hay un error, mantiene un array vacío
+          }
+      };
+  
+      const checkFetchingStatus = async () => {
           try {
               const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`);
               const data = await response.json();
               setIsFetching(data.status === "running"); // Actualiza el estado con la respuesta del servidor
-            } catch (error) {
+          } catch (error) {
               console.error("❌ Error al verificar el estado de recolección:", error);
           }
       };
-
-        checkFetchingStatus(); 
-        fetchAccounts();
-        setTimeout(() => setLoading(false), 1500);
-    }, []);
+  
+      const init = async () => {
+          checkFetchingStatus(); // Podés dejar que esto corra sin esperar
+          await fetchAccounts(); // Esperás a que termine de traer las cuentas
+          setLoading(false); // 🔹 Ahora el loading termina al finalizar fetchAccounts
+      };
+  
+      init();
+  }, []);
+  
 
     const handleShowModal = (twitterId) => {
       setSelectedAccount(twitterId);

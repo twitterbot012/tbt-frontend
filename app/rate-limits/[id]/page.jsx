@@ -18,26 +18,28 @@ export default function Home() {
     const twitterId = window.location.pathname.split("/").pop();
 
     useEffect(() => {
-      const fetchRateLimit = async () => {
-          try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logs/get_rate_limit?twitter_id=${twitterId}`);
-            const data = await response.json();
-              
-              if (response.ok) {
-                  setRateLimit(data.rate_limit);
-              } else {
-                  setMessage({ type: "danger", text: "Error obteniendo el rate limit." });
-              }
-          } catch (error) {
-              console.error("Error obteniendo el rate limit:", error);
-              setMessage({ type: "danger", text: "Error de conexión con el servidor." });
-          }
-      };
-
-      fetchRateLimit();
-      setTimeout(() => setLoading(false), 1500);
-  }, []);
-
+        const fetchRateLimit = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logs/get_rate_limit?twitter_id=${twitterId}`);
+                const data = await response.json();
+    
+                if (response.ok) {
+                    setRateLimit(data.rate_limit);
+                } else {
+                    setMessage({ type: "danger", text: "Error obteniendo el rate limit." });
+                }
+            } catch (error) {
+                console.error("Error obteniendo el rate limit:", error);
+                setMessage({ type: "danger", text: "Error de conexión con el servidor." });
+            } finally {
+                setLoading(false); // ✅ Se desactiva cuando termina fetchRateLimit (éxito o error)
+            }
+        };
+    
+        fetchRateLimit();
+    }, []);
+    
+    
     const toggleSidebar = () => {
         setSidebarOpen((prev) => !prev);
     };

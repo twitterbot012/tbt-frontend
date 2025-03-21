@@ -15,20 +15,21 @@ export default function Home() {
     const pathname = usePathname(); 
 
     useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const data = await getAccounts();
-                setAccounts(Array.isArray(data) ? data : []); 
-            } catch (error) {
-                console.error("❌ Error al obtener cuentas:", error);
-                setAccounts([]);
-            }
-        };
-
-        fetchAccounts();
-        setTimeout(() => setLoading(false), 1500);
-    }, []);
-
+      const fetchAccounts = async () => {
+          try {
+              const data = await getAccounts();
+              setAccounts(Array.isArray(data) ? data : []);
+          } catch (error) {
+              console.error("❌ Error al obtener cuentas:", error);
+              setAccounts([]);
+          } finally {
+              setLoading(false); // ✅ Se desactiva al terminar (éxito o error)
+          }
+      };
+  
+      fetchAccounts();
+  }, []);
+    
     const handleLogout = () => {
       document.cookie = "auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
       window.location.href = "/admin"; // Redirigir al login

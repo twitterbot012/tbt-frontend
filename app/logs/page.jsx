@@ -16,38 +16,38 @@ export default function Home() {
     const [logs, setLogs] = useState([]);
 
     useEffect(() => {
-        const fetchAccounts = async () => {
-            try {
-                const data = await getAccounts();
-                setAccounts(Array.isArray(data) ? data : []);
-            } catch (error) {
-                console.error("❌ Error al obtener cuentas:", error);
-                setAccounts([]);
-            }
-        };
-
-        const fetchLogs = async () => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logs/logs`);
-                if (!response.ok) throw new Error("Error al obtener logs");
-                const data = await response.json();
-                console.log("📥 Logs recibidos desde la API:", data);
-                setLogs(data);
-            } catch (error) {
-                console.error("❌ Error al obtener logs:", error);
-                setLogs([]);
-            }
-        };
-        
-        const fetchData = async () => {
-            await fetchAccounts();
-            await fetchLogs();
-            setTimeout(() => setLoading(false), 1500);
-        };
-
-        fetchData();
-    }, []);
-
+      const fetchAccounts = async () => {
+          try {
+              const data = await getAccounts();
+              setAccounts(Array.isArray(data) ? data : []);
+          } catch (error) {
+              console.error("❌ Error al obtener cuentas:", error);
+              setAccounts([]);
+          }
+      };
+  
+      const fetchLogs = async () => {
+          try {
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logs/logs`);
+              if (!response.ok) throw new Error("Error al obtener logs");
+              const data = await response.json();
+              console.log("📥 Logs recibidos desde la API:", data);
+              setLogs(data);
+          } catch (error) {
+              console.error("❌ Error al obtener logs:", error);
+              setLogs([]);
+          }
+      };
+  
+      const fetchData = async () => {
+          await fetchAccounts();
+          await fetchLogs();
+          setLoading(false); // ✅ Ahora loading se actualiza cuando ambas llamadas terminan
+      };
+  
+      fetchData();
+  }, []);
+  
     useEffect(() => {
         console.log("🚀 Logs actualizados en el estado:", logs);
     }, [logs]); // Para ver los logs en consola cuando cambian
