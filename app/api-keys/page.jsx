@@ -15,7 +15,7 @@ export default function Home() {
     const [isFetching, setIsFetching] = useState(false);
     const [error, setError] = useState(false);
     const pathname = usePathname();
-    const [message, setMessage] = useState(""); // Estado para mostrar mensajes
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/logs/api-keys`)
