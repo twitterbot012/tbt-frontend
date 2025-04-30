@@ -18,7 +18,7 @@ export default function Home() {
     useEffect(() => {
         const checkFetchingStatus = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/old/status-fetch`);
                 if (!response.ok) {
                     throw new Error("Error en la respuesta del servidor");
                 }

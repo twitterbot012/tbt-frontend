@@ -33,7 +33,7 @@ export default function Home() {
   
       const checkFetchingStatus = async () => {
           try {
-              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`);
+              const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/old/status-fetch`);
               const data = await response.json();
               setIsFetching(data.status === "running"); // Actualiza el estado con la respuesta del servidor
           } catch (error) {
@@ -71,7 +71,7 @@ export default function Home() {
     setIsFetching(prev => !prev); 
 
     try {
-        const endpoint = isFetching ? "/stop-fetch" : "/start-fetch";
+        const endpoint = isFetching ? "/old/stop-fetch" : "/old/start-fetch";
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, { method: 'POST' });
 
         if (!response.ok) throw new Error("Error en la solicitud al backend");
@@ -79,7 +79,7 @@ export default function Home() {
         // 🔄 Refrescamos el estado desde el backend después de unos segundos para asegurarnos
         setTimeout(async () => {
             try {
-                const statusResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/status-fetch`);
+                const statusResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/old/status-fetch`);
                 const statusData = await statusResponse.json();
                 setIsFetching(statusData.status === "running");
             } catch (error) {

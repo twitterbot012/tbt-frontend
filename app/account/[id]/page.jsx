@@ -44,7 +44,7 @@ export default function Home() {
     
         if (twitterId && !isNaN(twitterId)) {
             // Realizar fetch al endpoint del backend con el twitter_id
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/account/${twitterId}`)
+            fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/old/account/${twitterId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.user) {
@@ -81,7 +81,7 @@ export default function Home() {
             keywords: keywords,
         };
     
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/account/${twitterId}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/old/account/${twitterId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
